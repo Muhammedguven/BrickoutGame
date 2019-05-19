@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title> Game</title>
+    <style>
+	body {background-color:#333;}
+    	* { padding: 1; margin: 1;  }
+    	canvas { background:#333; display: block; margin: 0 auto; padding: 0  auto;  border: 3px solid black; }
+		#scr{
+			height: auto;
+			width:auto;	
+		}
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" width="800" height="500"></canvas>
+	
+	<br>
+	<div align="center" id="scoreArea" ></div>
+
+<script>
+
+		var canvas = document.getElementById("canvas");
+	    var scoreArea=document.getElementById("scoreArea");
+		var ctx = canvas.getContext("2d");
+		var ballRadius = 10;
+		var x = canvas.width/5;
+		var y = canvas.height-30;
+		var dx = 2;
+		var dy = -2;
+		var paddleHeight = 10;
+		var paddleWidth = 180;
+		var paddleX = (canvas.width-paddleWidth)/2;
+		var rightPressed = false;
+		var leftPressed = false;
+	
+		var caseRed=1;
+		var caseBlue=1;
+		var caseGreen=1;	
+		var casePurple=1;
+		var caseYellow=1;
+		var caseBlack=1;
+	
+		var score = 0;
+	
+		var ballcolor="#0096DD";
+		var brickcolor="#00FF00";
+		var brickcolor1="#660089";
+		var brickcolor2="#0000FF";
+		var brickcolor3="#FFFF00";
+		var brickcolor4="#FF0000";
+		
+		
+
+		document.addEventListener("keydown", keyDownHandler, false);
+		document.addEventListener("keyup", keyUpHandler, false);
+
+		function keyDownHandler(e) {
+			if(e.key == "Right" || e.key == "ArrowRight") {
+				rightPressed = true;
+			}
+			else if(e.key == "Left" || e.key == "ArrowLeft") {
+				leftPressed = true;
+			}
+		}
+
+		function keyUpHandler(e) {
+			if(e.key == "Right" || e.key == "ArrowRight") {
+				rightPressed = false;
+			}
+			else if(e.key == "Left" || e.key == "ArrowLeft") {
+				leftPressed = false;
+			}
+		}
+	
+		function collisionDetection() {
+			
+			if(caseRed==1){
+			if(x >50 && x <210 && y > 40 && y < 80) {
+					dy = -dy;
+				  caseRed=0;
+				  score=score+20;
+				  ballcolor=brickcolor4;
+				  
+                      
+				}
+			}
+			
+			if(caseBlue==1){
+			if(x >300 && x <460 && y > 40 && y < 80) {
+					dy = -dy;
+				caseBlue=0;
+				score=score+40;
+				ballcolor=brickcolor2;
+				  
+                        
+				}
+			}
+			
+			if(caseGreen==1){
+			if(x >550 && x <710 && y > 40 && y < 80) {
+					dy = -dy;
+				  caseGreen=0;
+				score=score+80;
+				ballcolor=brickcolor;
+				
+				
+			
+				  
+                        
+				}
+			}
+			
+			if(casePurple==1){
+			if(x >175 && x <335 && y > 120 && y < 160) {
+					dy = -dy;
+				   casePurple=0;
+				  score=score+60;
+				  ballcolor=brickcolor1;
+                       
+				}
+			}
+			
+			if(caseYellow==1){
+			if(x >425 && x <585 && y > 120 && y < 160) {
+					dy = -dy;
+				   caseYellow=0;
+				   score=score+50;
+				ballcolor=brickcolor3;
+				   
+                     
+				}
+			}
+			if(x >280 && x <520 && y > 320 && y < 336) {
+					dy = -dy;
+				}
+			if(score == 250) {
+                        alert("CONGRATULATIONS!!!");
+                        document.location.reload();
+                        clearInterval(interval);
+			
+				
+		}
+	}
+			
+		
+	
+
+
+		function drawBall() {
+			ctx.beginPath();
+			ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+			ctx.fillStyle = ballcolor;
+			ctx.fill();
+			ctx.closePath();
+			
+		}
+		function drawPaddle() {
+			ctx.beginPath();
+			ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+			ctx.fillStyle = "#0096DD";
+			ctx.fill();
+			ctx.closePath();
+			
+			scoreArea.innerHTML="SCORE : "+score;
+		}
+
+			function drawBrick(){
+				
+				if(caseRed==1){	
+				ctx.beginPath();
+				ctx.rect(50,40,160,40);
+				ctx.fillStyle="#FF0000";
+				ctx.fill();
+				ctx.closePath();	
+				 }
+				
+				
+				if(caseBlue==1){
+				ctx.beginPath();
+				ctx.rect(300,40,160,40);
+				ctx.fillStyle="#0000FF";
+				ctx.fill();
+				ctx.closePath();
+				 }
+
+				
+				if(caseGreen==1){  
+				ctx.beginPath();
+				ctx.rect(550,40,160,40);
+				ctx.fillStyle="#00FF00";
+				ctx.fill();
+				ctx.closePath();
+				}
+				   
+
+				
+				if(casePurple==1){	
+				ctx.beginPath();
+				ctx.rect(175,120,160,40);
+				ctx.fillStyle="#660089";
+				ctx.fill();
+				ctx.closePath();
+				}
+
+				
+				if(caseYellow==1){	
+				ctx.beginPath();
+				ctx.rect(425,120,160,40);
+				ctx.fillStyle="#FFFF00";
+				ctx.fill();
+				ctx.closePath();
+				}
+
+
+				ctx.beginPath();
+				ctx.rect(280,320,240,16);
+				ctx.fillStyle="#000000";
+				ctx.fill();
+				ctx.closePath();
+
+			}
+	
+	function drawScore() {
+	 
+	}
+			
+
+		function draw() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			drawBall();
+			drawPaddle();
+			drawBrick();
+			collisionDetection();
+			drawScore();
+
+			if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+				dx = -dx;
+			}
+			if(y + dy < ballRadius) {
+				dy = -dy;
+			}
+			else if(y + dy > canvas.height-ballRadius) {
+				
+				if(x > paddleX && x < paddleX + paddleWidth) {
+					dy = -dy;
+				}
+				else {
+					alert("GAME OVER!");
+					document.location.reload();
+					clearInterval(interval);
+				}
+			}
+
+			if(rightPressed && paddleX < canvas.width-paddleWidth) {
+				paddleX += 7;
+			}
+			else if(leftPressed && paddleX > 0) {
+				paddleX -= 7;
+			}
+
+			x += dx;
+			y += dy;
+		}
+
+		var interval = setInterval(draw, 10);
+	
+</script>
+
+</body>
+</html>	
